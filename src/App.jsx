@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -8,25 +7,37 @@ import Login from './components/Login';
 import CategorySelection from './components/CategorySelection';
 import OwnerSignUp from './components/OwnerSignUp';
 import TechnicianSignUp from './components/TechnicianSignUp';
-import ServiceCenterSignUp from './components/ServiceCentersSignup';
+import ServiceCenterSignUp from './components/ServiceCentersSignUp';
 import GuestHome from './components/GuestHome';
 
 function App() {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log('Auth state changed:', currentUser ? currentUser.uid : 'No user');
-      setUser(currentUser);
+      setLoading(true);
       if (currentUser) {
-        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data());
+        try {
+          const userDocRef = doc(db, 'users', currentUser.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+            console.log('User data fetched:', userDoc.data());
+          } else {
+            console.log('No user data found in Firestore');
+            setUserData(null);
+          }
+          setUser(currentUser);
+        } catch (err) {
+          console.error('Error fetching user data:', err);
         }
       } else {
+        setUser(null);
         setUserData(null);
       }
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -40,56 +51,66 @@ function App() {
     </div>
   );
 
+  const UserProfile = () => (
+    <div className="flex flex-col items-center gap-6">
+      {loading ? (
+        <svg className="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      ) : (
+        <>
+          <p className="text-lg font-medium text-green-600 bg-green-50 p-3 rounded-md shadow-sm">
+            Welcome, {user.email}!
+          </p>
+          {userData ? (
+            <div className="w-full bg-gray-50 p-4 rounded-lg shadow-inner border border-gray-200">
+              <h3 className="text-xl font-semibold text-blue-700 mb-4 text-center">Your Profile</h3>
+              <div className="text-gray-700 space-y-2">
+                <p><span className="font-medium">User ID:</span> {userData.userId}</p>
+                <p><span className="font-medium">Category:</span> {userData.category}</p>
+                <p><span className="font-medium">Name:</span> {userData.name}</p>
+                {userData.category === 'owner' && (
+                  <>
+                    <p><span className="font-medium">Car:</span> {userData.carMake} {userData.carModel}</p>
+                    <p><span className="font-medium">Number Plate:</span> {userData.numberPlate}</p>
+                    <p><span className="font-medium">VIN:</span> {userData.vinNumber}</p>
+                  </>
+                )}
+                {userData.category === 'technician' && (
+                  <>
+                    <p><span className="font-medium">Specialization:</span> {userData.specialization}</p>
+                    <p><span className="font-medium">Age:</span> {userData.age}</p>
+                  </>
+                )}
+                {userData.category === 'service-center' && (
+                  <>
+                    <p><span className="font-medium">Certification:</span> {userData.certification}</p>
+                    <p><span className="font-medium">Address:</span> {userData.address}</p>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
+            <p className="text-red-600">No profile data found.</p>
+          )}
+          <button
+            onClick={() => auth.signOut()}
+            className="p-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+          >
+            Logout
+          </button>
+        </>
+      )}
+    </div>
+  );
+
   return (
     <Router>
       <Routes>
         <Route
           path="/"
-          element={
-            user ? (
-              <AuthLayout>
-                <div className="flex flex-col items-center gap-6">
-                  <p className="text-lg font-medium text-green-600 bg-green-50 p-3 rounded-md shadow-sm">
-                    Welcome, {user.email}!
-                  </p>
-                  {userData && (
-                    <div className="text-gray-700 text-center">
-                      <p>User ID: {userData.userId}</p>
-                      <p>Category: {userData.category}</p>
-                      <p>Name: {userData.name}</p>
-                      {userData.category === 'owner' && (
-                        <>
-                          <p>Car: {userData.carMake} {userData.carModel}</p>
-                          <p>Number Plate: {userData.numberPlate}</p>
-                          <p>VIN: {userData.vinNumber}</p>
-                        </>
-                      )}
-                      {userData.category === 'technician' && (
-                        <>
-                          <p>Specialization: {userData.specialization}</p>
-                          <p>Age: {userData.age}</p>
-                        </>
-                      )}
-                      {userData.category === 'service-center' && (
-                        <>
-                          <p>Certification: {userData.certification}</p>
-                          <p>Address: {userData.address}</p>
-                        </>
-                      )}
-                    </div>
-                  )}
-                  <button
-                    onClick={() => auth.signOut()}
-                    className="p-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </AuthLayout>
-            ) : (
-              <GuestHome />
-            )
-          }
+          element={user ? <AuthLayout><UserProfile /></AuthLayout> : <GuestHome />}
         />
         <Route path="/login" element={user ? <Navigate to="/" /> : <AuthLayout><Login /></AuthLayout>} />
         <Route path="/signup" element={user ? <Navigate to="/" /> : <AuthLayout><CategorySelection /></AuthLayout>} />
