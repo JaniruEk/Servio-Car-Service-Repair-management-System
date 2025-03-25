@@ -27,16 +27,17 @@ function OwnerSignUp() {
   };
 
   return (
-    <div>
-      <h2>Sign Up as Vehicle Owner</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleRegister}>
+    <div className="flex flex-col items-center w-full">
+      <h2 className="text-2xl font-semibold text-blue-700 mb-6 tracking-wide text-center">Sign Up as Vehicle Owner</h2>
+      {error && <p className="text-red-600 text-sm mb-6 p-2 bg-red-50 rounded-md border border-red-200 text-center">{error}</p>}
+      <form onSubmit={handleRegister} className="flex flex-col gap-5 w-full">
         <input
           type="text"
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
         <input
           type="email"
@@ -44,6 +45,7 @@ function OwnerSignUp() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
         <input
           type="password"
@@ -51,6 +53,7 @@ function OwnerSignUp() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
         <input
           type="text"
@@ -58,6 +61,7 @@ function OwnerSignUp() {
           value={carMake}
           onChange={(e) => setCarMake(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
         <input
           type="text"
@@ -65,6 +69,7 @@ function OwnerSignUp() {
           value={carModel}
           onChange={(e) => setCarModel(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
         <input
           type="text"
@@ -72,6 +77,7 @@ function OwnerSignUp() {
           value={numberPlate}
           onChange={(e) => setNumberPlate(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
         <input
           type="text"
@@ -79,10 +85,12 @@ function OwnerSignUp() {
           value={vinNumber}
           onChange={(e) => setVinNumber(e.target.value)}
           required
+          className="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-gray-800 bg-gray-50 placeholder-gray-400 transition-all duration-300 ease-in-out"
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" 
+        className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all duration-200 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-1">Sign Up</button>
       </form>
-      <button className="link-button" onClick={() => navigate('/signup')}>
+      <button className="mt-6 text-blue-600 hover:text-blue-800 text-sm font-medium underline underline-offset-4 transition-colors duration-200 w-full text-center" onClick={() => navigate('/signup')}>
         Back to Category Selection
       </button>
     </div>
