@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth ,db} from '../firebase';
 import { useNavigate } from 'react-router-dom';
+
+import { doc, setDoc } from 'firebase/firestore';
 
 function OwnerSignUp() {
   const [email, setEmail] = useState('');
@@ -16,15 +18,46 @@ function OwnerSignUp() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert('Registered successfully! Please sign in.');
-      navigate('/login');
-    } catch (err) {
-      setError('Registration failed: ' + err.message);
-      console.error(err);
-    }
-  };
+  //   try {
+  //     await createUserWithEmailAndPassword(auth, email, password);
+  //     alert('Registered successfully! Please sign in.');
+  //     navigate('/login');
+  //   } catch (err) {
+  //     setError('Registration failed: ' + err.message);
+  //     console.error(err);
+  //   }
+  // };
+
+  try {
+    console.log('Starting registration...');
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const userId = user.uid;
+    console.log('User created in Auth:', userId);
+
+    const userData = {
+      userId,
+      category: 'owner',
+      email,
+      name,
+      carMake,
+      carModel,
+      numberPlate,
+      vinNumber,
+      createdAt: new Date().toISOString(),
+    };
+    console.log('Attempting to write to Firestore:', userData);
+
+    await setDoc(doc(db, 'users', userId), userData);
+    console.log('Data written to Firestore successfully');
+
+    alert('Registered successfully! Please sign in.');
+    navigate('/login');
+  } catch (err) {
+    setError('Registration failed: ' + err.message);
+    console.error('Error during registration:', err);
+  }
+};
 
   return (
     <div className="flex flex-col items-center w-full">

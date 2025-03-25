@@ -16,12 +16,12 @@ function Login() {
       alert('Logged in successfully!');
       setEmail('');
       setPassword('');
+      navigate('/'); // Redirect to home
     } catch (err) {
       setError('Login failed: ' + err.message);
       console.error(err);
     }
   };
-
   return (
     <div className="flex flex-col items-center w-full">
       <h2 className="text-2xl font-semibold text-blue-700 mb-6 tracking-wide text-center">Login to Servio</h2>

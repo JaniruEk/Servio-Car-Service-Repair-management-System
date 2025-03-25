@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth ,db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+
+import { doc, setDoc } from 'firebase/firestore';
 
 function ServiceCenterSignUp() {
   const [email, setEmail] = useState('');
@@ -14,16 +16,36 @@ function ServiceCenterSignUp() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert('Registered successfully! Please sign in.');
-      navigate('/login');
-    } catch (err) {
-      setError('Registration failed: ' + err.message);
-      console.error(err);
-    }
-  };
-
+  //   try {
+  //     await createUserWithEmailAndPassword(auth, email, password);
+  //     alert('Registered successfully! Please sign in.');
+  //     navigate('/login');
+  //   } catch (err) {
+  //     setError('Registration failed: ' + err.message);
+  //     console.error(err);
+  //   }
+  // };
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const userId = user.uid;
+    const userData = {
+      userId,
+      category: 'service-center',
+      email,
+      name,
+      certification,
+      address,
+      createdAt: new Date().toISOString(),
+    };
+    await setDoc(doc(db, 'users', userId), userData);
+    alert('Registered successfully! Please sign in.');
+    navigate('/login');
+  } catch (err) {
+    setError('Registration failed: ' + err.message);
+    console.error('Error during registration:', err);
+  }
+};
   return (
     <div className="flex flex-col items-center w-full">
       <h2 className="text-2xl font-semibold text-blue-700 mb-6 tracking-wide text-center">Sign Up as Service Center</h2>
