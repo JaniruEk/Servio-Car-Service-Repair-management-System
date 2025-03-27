@@ -1,3 +1,4 @@
+// src/App.jsx
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -9,6 +10,8 @@ import OwnerSignUp from './components/OwnerSignUp';
 import TechnicianSignUp from './components/TechnicianSignUp';
 import ServiceCenterSignUp from './components/ServiceCentersSignUp';
 import GuestHome from './components/GuestHome';
+import AboutUs from './components/AboutUs';
+import Contact from './components/Contact';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -43,9 +46,17 @@ function App() {
   }, []);
 
   const AuthLayout = ({ children }) => (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-50 p-4">
-      <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg border border-gray-100">
-        <h1 className="text-4xl font-bold text-blue-900 mb-8 text-center tracking-wide">Servio</h1>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4"
+      style={{
+        backgroundImage: `url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')`,
+      }}
+    >
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div> {/* Overlay for readability */}
+      <div className="relative w-full max-w-md p-6 bg-white/90 rounded-xl shadow-2xl border border-gray-100 backdrop-blur-md">
+        <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center tracking-wide font-[Poppins] animate-fade-in">
+          Servio
+        </h1>
         {children}
       </div>
     </div>
@@ -110,7 +121,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={user ? <AuthLayout><UserProfile /></AuthLayout> : <GuestHome />}
+          element={user ? <AuthLayout><UserProfile /></AuthLayout> : <GuestHome user={user} />}
         />
         <Route path="/login" element={user ? <Navigate to="/" /> : <AuthLayout><Login /></AuthLayout>} />
         <Route path="/signup" element={user ? <Navigate to="/" /> : <AuthLayout><CategorySelection /></AuthLayout>} />
@@ -118,7 +129,12 @@ function App() {
         <Route path="/signup/technician" element={user ? <Navigate to="/" /> : <AuthLayout><TechnicianSignUp /></AuthLayout>} />
         <Route path="/signup/service-center" element={user ? <Navigate to="/" /> : <AuthLayout><ServiceCenterSignUp /></AuthLayout>} />
         <Route path="/book-service" element={<div>Book Service Page (TBD)</div>} />
-        <Route path="/contact" element={<div>Contact Us Page (TBD)</div>} />
+        <Route path="/contact" element={<Contact user={user} />} />
+        <Route path="/about-us" element={<AboutUs user={user} />} />
+        <Route
+          path="/profile"
+          element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />}
+        />
       </Routes>
     </Router>
   );
