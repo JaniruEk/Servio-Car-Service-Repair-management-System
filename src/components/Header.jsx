@@ -1,5 +1,5 @@
 // src/components/Header.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 
@@ -14,8 +14,34 @@ function Header() {
     { text: 'Contact Us', path: '/contact' },
   ];
 
+  // Use IntersectionObserver to apply the pop-up animation
+  useEffect(() => {
+    const header = document.querySelector('header');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+            observer.unobserve(entry.target); // Stop observing after animation
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (header) {
+      observer.observe(header);
+    }
+
+    return () => {
+      if (header) {
+        observer.unobserve(header);
+      }
+    };
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 w-full bg-gray-900 text-white shadow-lg z-50">
+    <header className="fixed top-0 left-0 w-full bg-gray-900 text-white shadow-lg z-50 section-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
         {/* Logo */}
         <div className="flex items-center">

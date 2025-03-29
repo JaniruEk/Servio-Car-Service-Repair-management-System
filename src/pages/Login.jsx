@@ -213,7 +213,7 @@ function Login() {
             className="text-orange-600 hover:text-orange-800 text-sm font-medium font-[Open Sans] underline underline-offset-4 transition-colors duration-300 animate-slide-up animate-delay-300"
             disabled={loading}
           >
-            Back to Guest Home
+            Back to Home
           </button>
         </div>
       </div>

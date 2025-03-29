@@ -4,14 +4,14 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './components/Login';
-import CategorySelection from './components/CategorySelection';
-import OwnerSignUp from './components/OwnerSignUp';
-import TechnicianSignUp from './components/TechnicianSignUp';
-import ServiceCenterSignUp from './components/ServiceCentersSignUp';
-import GuestHome from './components/GuestHome';
-import AboutUs from './components/AboutUs';
-import Contact from './components/Contact';
+import Login from './pages/Login';
+import CategorySelection from './pages/CategorySelection';
+import OwnerSignUp from './pages/OwnerSignUp';
+import TechnicianSignUp from './pages/TechnicianSignUp';
+import ServiceCenterSignUp from './pages/ServiceCentersSignUp';
+import GuestHome from './pages/GuestHome';
+import AboutUs from './pages/AboutUs';
+import Contact from './pages/Contact';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -54,9 +54,9 @@ function App() {
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div> {/* Overlay for readability */}
       <div className="relative w-full max-w-md p-6 bg-white/90 rounded-xl shadow-2xl border border-gray-100 backdrop-blur-md">
-        <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center tracking-wide font-[Poppins] animate-fade-in">
+        {/* <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center tracking-wide font-[Poppins] animate-fade-in">
           Servio
-        </h1>
+        </h1> */}
         {children}
       </div>
     </div>
@@ -131,10 +131,9 @@ function App() {
         <Route path="/book-service" element={<div>Book Service Page (TBD)</div>} />
         <Route path="/contact" element={<Contact user={user} />} />
         <Route path="/about-us" element={<AboutUs user={user} />} />
-        <Route
-          path="/profile"
-          element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />}
+        <Route path="/profile" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />}
         />
+        
       </Routes>
     </Router>
   );
