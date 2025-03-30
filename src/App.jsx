@@ -4,14 +4,17 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Login from './pages/Login';
 import CategorySelection from './pages/CategorySelection';
 import OwnerSignUp from './pages/OwnerSignUp';
 import TechnicianSignUp from './pages/TechnicianSignUp';
-import ServiceCenterSignUp from './pages/ServiceCentersSignUp';
+import ServiceCenterSignUp from './pages/ServiceCenterSignUp';
 import GuestHome from './pages/GuestHome';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
+import AdminDashboard from './admin/admin';
+import TechnicianDashboard from './pages/TechnicianDashboard'; // Fixed typo: TechnitianDashboard -> TechnicianDashboard
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,75 +48,147 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  // Animation Variants (from AboutUs/AdminDashboard)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+  };
+
   const AuthLayout = ({ children }) => (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4"
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="min-h-screen flex items-center justify-center bg-gray-900 p-4 bg-cover bg-center relative"
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')`,
       }}
     >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div> {/* Overlay for readability */}
-      <div className="relative w-full max-w-md p-6 bg-white/90 rounded-xl shadow-2xl border border-gray-100 backdrop-blur-md">
-        {/* <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center tracking-wide font-[Poppins] animate-fade-in">
-          Servio
-        </h1> */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
+      <motion.div
+        variants={itemVariants}
+        className="relative w-full max-w-md p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl border border-gray-700/50"
+      >
         {children}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 
   const UserProfile = () => (
-    <div className="flex flex-col items-center gap-6">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col items-center gap-6"
+    >
       {loading ? (
-        <svg className="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg
+          className="animate-spin h-8 w-8 text-red-500"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
       ) : (
         <>
-          <p className="text-lg font-medium text-green-600 bg-green-50 p-3 rounded-md shadow-sm">
+          <motion.p
+            variants={itemVariants}
+            className="text-lg font-medium text-red-500 bg-red-100/20 p-3 rounded-md shadow-sm font-[Open Sans]"
+          >
             Welcome, {user.email}!
-          </p>
+          </motion.p>
           {userData ? (
-            <div className="w-full bg-gray-50 p-4 rounded-lg shadow-inner border border-gray-200">
-              <h3 className="text-xl font-semibold text-blue-700 mb-4 text-center">Your Profile</h3>
-              <div className="text-gray-700 space-y-2">
-                <p><span className="font-medium">User ID:</span> {userData.userId}</p>
-                <p><span className="font-medium">Category:</span> {userData.category}</p>
-                <p><span className="font-medium">Name:</span> {userData.name}</p>
+            <motion.div
+              variants={itemVariants}
+              className="w-full bg-gray-800 p-4 rounded-lg shadow-inner border border-gray-700/50"
+            >
+              <h3 className="text-xl font-semibold text-white mb-4 text-center font-[Poppins]">
+                Your Profile
+              </h3>
+              <div className="text-gray-300 space-y-2 font-[Open Sans]">
+                <p>
+                  <span className="font-medium text-white">User ID:</span> {userData.userId}
+                </p>
+                <p>
+                  <span className="font-medium text-white">Category:</span> {userData.category}
+                </p>
+                <p>
+                  <span className="font-medium text-white">Name:</span> {userData.name}
+                </p>
                 {userData.category === 'owner' && (
                   <>
-                    <p><span className="font-medium">Car:</span> {userData.carMake} {userData.carModel}</p>
-                    <p><span className="font-medium">Number Plate:</span> {userData.numberPlate}</p>
-                    <p><span className="font-medium">VIN:</span> {userData.vinNumber}</p>
+                    <p>
+                      <span className="font-medium text-white">Car:</span> {userData.carMake}{' '}
+                      {userData.carModel}
+                    </p>
+                    <p>
+                      <span className="font-medium text-white">Number Plate:</span>{' '}
+                      {userData.numberPlate}
+                    </p>
+                    <p>
+                      <span className="font-medium text-white">VIN:</span> {userData.vinNumber}
+                    </p>
                   </>
                 )}
                 {userData.category === 'technician' && (
                   <>
-                    <p><span className="font-medium">Specialization:</span> {userData.specialization}</p>
-                    <p><span className="font-medium">Age:</span> {userData.age}</p>
+                    <p>
+                      <span className="font-medium text-white">Specialization:</span>{' '}
+                      {userData.specialization}
+                    </p>
+                    <p>
+                      <span className="font-medium text-white">Age:</span> {userData.age}
+                    </p>
                   </>
                 )}
                 {userData.category === 'service-center' && (
                   <>
-                    <p><span className="font-medium">Certification:</span> {userData.certification}</p>
-                    <p><span className="font-medium">Address:</span> {userData.address}</p>
+                    <p>
+                      <span className="font-medium text-white">Certification:</span>{' '}
+                      {userData.certification}
+                    </p>
+                    <p>
+                      <span className="font-medium text-white">Address:</span> {userData.address}
+                    </p>
                   </>
                 )}
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <p className="text-red-600">No profile data found.</p>
+            <motion.p variants={itemVariants} className="text-red-400 font-[Open Sans]">
+              No profile data found.
+            </motion.p>
           )}
-          <button
+          <motion.button
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => auth.signOut()}
-            className="p-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+            className="p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg transform"
           >
             Logout
-          </button>
+          </motion.button>
         </>
       )}
-    </div>
+    </motion.div>
   );
 
   return (
@@ -131,9 +206,12 @@ function App() {
         <Route path="/book-service" element={<div>Book Service Page (TBD)</div>} />
         <Route path="/contact" element={<Contact user={user} />} />
         <Route path="/about-us" element={<AboutUs user={user} />} />
-        <Route path="/profile" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />}
-        />
-        
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/profile" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />} />
+        <Route path="/technician-home" element={<TechnicianDashboard />} /> {/* Bypassed authentication for testing */}
+        <Route path="/job-list" element={<div>Job List Page (TBD)</div>} />
+        <Route path="/parts-request" element={<div>Parts Request Page (TBD)</div>} />
+        <Route path="/job-details/:id" element={<div>Job Details Page (TBD)</div>} />
       </Routes>
     </Router>
   );

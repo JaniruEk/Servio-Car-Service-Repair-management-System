@@ -71,7 +71,7 @@ function Login() {
       navigate(
         data.category === 'owner' ? '/owner-home' :
         data.category === 'technician' ? '/technician-home' :
-        '/service-center-home'
+        '/service-center-dashboard'
       );
     } catch (err) {
       setError('Google login failed: ' + err.message);

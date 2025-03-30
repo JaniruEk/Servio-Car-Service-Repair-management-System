@@ -1,6 +1,9 @@
 // src/components/TechnicianSignUp.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, UserIcon, WrenchScrewdriverIcon, CakeIcon } from '@heroicons/react/24/outline';
 
 function TechnicianSignUp() {
@@ -26,11 +29,18 @@ function TechnicianSignUp() {
   };
 
   const validatePasswords = () => {
-    if (password !== confirmPassword) {
+    if (!password || !confirmPassword) {
+      setPasswordError('Both password fields are required');
+      return false;
+    } else if (password !== confirmPassword) {
       setPasswordError('Passwords do not match');
-    } else {
-      setPasswordError('');
-    }
+      return false;
+    } else if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+      return false;
+    }else
+    setPasswordError('');
+    return true;
   };
 
   const handleEmailChange = (e) => {
@@ -53,10 +63,10 @@ function TechnicianSignUp() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    validatePasswords();
+    const isPasswordValid = validatePasswords();
     if (
       emailError ||
-      passwordError ||
+      !isPasswordValid ||
       !email ||
       !password ||
       !confirmPassword ||
@@ -70,22 +80,21 @@ function TechnicianSignUp() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-          category: 'technician',
-          name,
-          specialization,
-          age: Number(age),
-        }),
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, 'users', user.uid), {
+        userId: user.uid,
+        email: email,
+        category: 'technician',
+        name: name,
+        specialization: specialization,
+        age: Number(age),
+        createdAt: new Date().toISOString(),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error);
+
       alert('Registered successfully!');
-      navigate(data.redirect);
+      navigate('/technician-home');
     } catch (err) {
       setError('Registration failed: ' + err.message);
       console.error('Error during registration:', err);

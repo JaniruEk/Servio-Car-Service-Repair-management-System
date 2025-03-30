@@ -187,31 +187,88 @@ function AboutUs({ user }) {
           </motion.section>
 
           {/* Mission */}
-          <motion.section
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            whileHover="hover"
-            className="flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md p-6 rounded-xl"
-          >
-            <motion.img
-              variants={itemVariants}
-              src="https://images.unsplash.com/photo-1517524206122-611ddea5d194?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60"
-              alt="Car Maintenance"
-              className="flex-1 w-full md:w-[400px] h-[300px] object-cover rounded-lg mr-0 md:mr-5 mb-5 md:mb-0"
-            />
-            <motion.div variants={itemVariants} className="flex-1">
-              <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-3 font-[Poppins]">
-                Our Mission
-              </motion.h3>
-              <motion.p variants={itemVariants} className="text-sm text-gray-300 leading-relaxed font-[Open Sans]">
-                Our goal is to empower vehicle owners with a user-friendly, reliable tool that ensures their cars remain in top condition. We strive to deliver exceptional service management, transparency, and convenience through innovative technology and customer-focused solutions.
-              </motion.p>
-            </motion.div>
-          </motion.section>
+          {/* Section 2: Automotive Excellence */}
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+          className="flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md p-6 rounded-xl"
+        >
+          <img
+            src="/images/repair.jpg" // Adjusted path for public folder
+            alt="Repair Shop"
+            className="flex-1 w-full md:w-[400px] h-[300px] object-cover rounded-lg mr-0 md:mr-5 mb-5 md:mb-0"
+          />
+          <div className="flex-1">
+            <h3 className="text-2xl font-bold text-white mb-3 font-[Poppins]">
+              A Journey Towards Automotive Excellence
+            </h3>
+            <p className="text-sm text-gray-300 leading-relaxed font-[Open Sans]">
+              Our system is built by a team of automotive enthusiasts and tech
+              experts who are passionate about making a difference in the
+              industry. We provide a seamless experience for technicians, shop
+              managers, and customers, ensuring every repair job is handled with
+              precision and care.
+            </p>
+          </div>
+        </motion.section>
         </motion.main>
       </motion.div>
+      {/* Vision and Mission Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="bg-cover bg-center bg-no-repeat py-12 text-white text-center"
+        style={{
+          backgroundImage: "url('/images/dashboard-bg.jpg')", // Adjusted path for public folder
+          backgroundColor: "rgba(29, 27, 27, 0.8)",
+          backgroundBlendMode: "overlay",
+        }}
+      >
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-center items-center gap-8 px-4">
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
+            className="flex-1 p-5"
+          >
+            <img
+              src="/images/panel1.jpg" // Adjusted path for public folder
+              alt="Vision"
+              className="mx-auto mb-3 w-32 h-32 object-cover rounded-full"
+            />
+            <h2 className="text-2xl font-bold mb-3 font-[Poppins]">Vision</h2>
+            <p className="text-sm leading-relaxed font-[Open Sans] max-w-md mx-auto text-gray-300">
+              To be the best in the country, Innovative, Progressive organization
+              and to build island's most desirable brands by pioneering new
+              technologies backed with customer satisfaction.
+            </p>
+          </motion.div>
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
+            className="flex-1 p-5"
+          >
+            <img
+              src="/images/panel2.jpg" // Adjusted path for public folder
+              alt="Mission"
+              className="mx-auto mb-3 w-32 h-32 object-cover rounded-full"
+            />
+            <h2 className="text-2xl font-bold mb-3 font-[Poppins]">Mission</h2>
+            <p className="text-sm leading-relaxed font-[Open Sans] max-w-md mx-auto text-gray-300">
+              Driven by the principles of honesty and dedication, we strive to
+              offer Sri Lankans affordable 'peoples' vehicles', while providing
+              services that exceed their expectations.
+            </p>
+          </motion.div>
+        </div>
+      </motion.section>
+
 
       {/* Stats Section */}
       <motion.section

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+
+
 .section-hidden {
     opacity: 0;
   }
