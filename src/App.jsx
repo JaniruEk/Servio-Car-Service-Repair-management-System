@@ -14,7 +14,10 @@ import GuestHome from './pages/GuestHome';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
 import AdminDashboard from './admin/admin';
-import TechnicianDashboard from './pages/TechnicianDashboard'; // Fixed typo: TechnitianDashboard -> TechnicianDashboard
+import TechnicianDashboard from './pages/TechnicianDashboard'; 
+import OwnerHome from './pages/OwnerHome'; // Assuming you have an OwnerHome component
+import ContactTechnician from './pages/contactTechnician';
+import BookServiceCenter from './pages/BookServiceCenter';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -212,6 +215,9 @@ function App() {
         <Route path="/job-list" element={<div>Job List Page (TBD)</div>} />
         <Route path="/parts-request" element={<div>Parts Request Page (TBD)</div>} />
         <Route path="/job-details/:id" element={<div>Job Details Page (TBD)</div>} />
+        <Route path="/owner-home" element={<OwnerHome />} />
+        <Route path="/contact-technician" element={<ContactTechnician />}/>
+        <Route path="/book-service-center" element={<BookServiceCenter />}/>
       </Routes>
     </Router>
   );
