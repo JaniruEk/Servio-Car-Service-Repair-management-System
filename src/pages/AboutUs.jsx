@@ -11,6 +11,17 @@ import {
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { auth } from '../firebase';
+import Lakshan from '../assets/images/Lakshan.jpg';
+import Veenath from '../assets/images/Veenath.jpg';
+import Udula from '../assets/images/Udula.jpg';
+import Devmi from '../assets/images/Devmi.jpg'; // Adjusted path for public folder
+import Janiru from '../assets/images/Janiru.jpg';
+import RepairShop from '../assets/images/RepairShop.jpg'; // Adjusted path for public folder
+import HeroBg from '../assets/images/hero-bg.jpg'; // Adjusted path for public folder
+import Technician from '../assets/images/Technician.jpg'; // Adjusted path for public folder
+import Vision from '../assets/images/Vision.jpg';
+import Mission from '../assets/images/Mission.jpg';
+
 
 function AboutUs({ user }) {
   const navigate = useNavigate();
@@ -26,12 +37,6 @@ function AboutUs({ user }) {
     { title: 'Repair Tracking', description: 'Track your vehicle’s repair progress in real-time.' },
     { title: 'Maintenance Management', description: 'Manage all your car care needs seamlessly.' },
     { title: 'Customer Support', description: 'Get assistance anytime with our dedicated support team.' },
-  ];
-
-  const team = [
-    { name: 'Janiru', role: 'Founder & CEO', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60' },
-    { name: 'Veenath', role: 'Lead Developer', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60' },
-    { name: 'Udula', role: 'Customer Support', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60' },
   ];
 
   const testimonials = [
@@ -74,38 +79,38 @@ function AboutUs({ user }) {
       <Header />
 
       {/* Hero Section */}
-      <motion.section
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative min-h-[60vh] flex items-center justify-center bg-cover bg-center overflow-hidden"
-      >
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')" }}
+        <motion.section
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative min-h-[60vh] flex items-center justify-center bg-cover bg-center overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
-        </div>
-        <motion.div
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${HeroBg})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
+          </div>
+          <motion.div
+            variants={itemVariants}
+            className="relative z-10 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          >
+            <motion.h1
           variants={itemVariants}
-          className="relative z-10 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        >
-          <motion.h1
-            variants={itemVariants}
-            className="text-5xl md:text-6xl font-extrabold font-[Poppins] tracking-tight drop-shadow-lg"
-          >
-            About Servio
-          </motion.h1>
-          <motion.h2
-            variants={itemVariants}
-            className="text-3xl md:text-4xl font-bold font-[Raleway] mt-4"
-          >
-            Who We Are
-          </motion.h2>
-        </motion.div>
-      </motion.section>
+          className="text-5xl md:text-6xl font-extrabold font-[Poppins] tracking-tight drop-shadow-lg"
+            >
+          About Servio
+            </motion.h1>
+            <motion.h2
+          variants={itemVariants}
+          className="text-3xl md:text-4xl font-bold font-[Raleway] mt-4"
+            >
+          Who We Are
+            </motion.h2>
+          </motion.div>
+        </motion.section>
 
-      {/* Main Content with Sidebar */}
+        {/* Main Content with Sidebar */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -180,7 +185,7 @@ function AboutUs({ user }) {
             </motion.div>
             <motion.img
               variants={itemVariants}
-              src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60"
+              src={Technician} // Adjusted path for public folder
               alt="Car Service"
               className="flex-1 w-full md:w-[400px] h-[300px] object-cover rounded-lg"
             />
@@ -188,33 +193,34 @@ function AboutUs({ user }) {
 
           {/* Mission */}
           {/* Section 2: Automotive Excellence */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          animate="visible"
-          whileHover="hover"
-          className="flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md p-6 rounded-xl"
-        >
-          <img
-            src="/images/repair.jpg" // Adjusted path for public folder
-            alt="Repair Shop"
-            className="flex-1 w-full md:w-[400px] h-[300px] object-cover rounded-lg mr-0 md:mr-5 mb-5 md:mb-0"
-          />
-          <div className="flex-1">
-            <h3 className="text-2xl font-bold text-white mb-3 font-[Poppins]">
-              A Journey Towards Automotive Excellence
-            </h3>
-            <p className="text-sm text-gray-300 leading-relaxed font-[Open Sans]">
-              Our system is built by a team of automotive enthusiasts and tech
-              experts who are passionate about making a difference in the
-              industry. We provide a seamless experience for technicians, shop
-              managers, and customers, ensuring every repair job is handled with
-              precision and care.
-            </p>
-          </div>
-        </motion.section>
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
+            className="flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md p-6 rounded-xl"
+          >
+            <img
+              src={RepairShop} // Adjusted path for public folder
+              alt="Repair Shop"
+              className="flex-1 w-full md:w-[400px] h-[300px] object-cover rounded-lg mr-0 md:mr-5 mb-5 md:mb-0"
+            />
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-white mb-3 font-[Poppins]">
+                A Journey Towards Automotive Excellence
+              </h3>
+              <p className="text-sm text-gray-300 leading-relaxed font-[Open Sans]">
+                Our system is built by a team of automotive enthusiasts and tech
+                experts who are passionate about making a difference in the
+                industry. We provide a seamless experience for technicians, shop
+                managers, and customers, ensuring every repair job is handled with
+                precision and care.
+              </p>
+            </div>
+          </motion.section>
         </motion.main>
       </motion.div>
+
       {/* Vision and Mission Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -236,7 +242,7 @@ function AboutUs({ user }) {
             className="flex-1 p-5"
           >
             <img
-              src="/images/panel1.jpg" // Adjusted path for public folder
+              src={Vision} // Adjusted path for public folder
               alt="Vision"
               className="mx-auto mb-3 w-32 h-32 object-cover rounded-full"
             />
@@ -255,7 +261,7 @@ function AboutUs({ user }) {
             className="flex-1 p-5"
           >
             <img
-              src="/images/panel2.jpg" // Adjusted path for public folder
+              src={Mission} // Adjusted path for public folder
               alt="Mission"
               className="mx-auto mb-3 w-32 h-32 object-cover rounded-full"
             />
@@ -268,7 +274,6 @@ function AboutUs({ user }) {
           </motion.div>
         </div>
       </motion.section>
-
 
       {/* Stats Section */}
       <motion.section
@@ -371,24 +376,71 @@ function AboutUs({ user }) {
               Our dedicated team at Servio works tirelessly to ensure your car care experience is seamless and stress-free.
             </motion.p>
           </motion.div>
-          <motion.div variants={containerVariants} className="lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="relative"
-              >
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-center">
-                  <h4 className="text-sm font-bold font-[Poppins]">{member.name}</h4>
-                  <p className="text-xs font-[Open Sans] text-red-500">{member.role}</p>
-                </div>
-              </motion.div>
-            ))}
+          <motion.div variants={containerVariants} className="lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {/* Team Member 1: Janiru */}
+            <motion.div variants={itemVariants} className="relative">
+              <img
+                src={Janiru}
+                alt="Janiru"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-center">
+                <h4 className="text-sm font-bold font-[Poppins]">Janiru</h4>
+                <p className="text-xs font-[Open Sans] text-red-500">Founder & CEO</p>
+              </div>
+            </motion.div>
+
+            {/* Team Member 2: Veenath */}
+            <motion.div variants={itemVariants} className="relative">
+              <img
+                src={Veenath} // Adjusted path for public folder
+                alt="Veenath"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-center">
+                <h4 className="text-sm font-bold font-[Poppins]">Veenath</h4>
+                <p className="text-xs font-[Open Sans] text-red-500">Lead Developer</p>
+              </div>
+            </motion.div>
+
+            {/* Team Member 3: Udula */}
+            <motion.div variants={itemVariants} className="relative">
+              <img
+                src={Udula}
+                alt="Udula"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-center">
+                <h4 className="text-sm font-bold font-[Poppins]">Udula</h4>
+                <p className="text-xs font-[Open Sans] text-red-500">Customer Support</p>
+              </div>
+            </motion.div>
+
+            {/* Team Member 4: Lakshan */}
+            <motion.div variants={itemVariants} className="relative">
+              <img
+                src={Lakshan} // Adjusted path for public folder
+                alt="Lakshan"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-center">
+                <h4 className="text-sm font-bold font-[Poppins]">Lakshan</h4>
+                <p className="text-xs font-[Open Sans] text-red-500">Marketing Manager</p>
+              </div>
+            </motion.div>
+
+            {/* Team Member 5: Devmi */}
+            <motion.div variants={itemVariants} className="relative">
+              <img
+                src={Devmi} // Adjusted path for public folder
+                alt="Devmi"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-center">
+                <h4 className="text-sm font-bold font-[Poppins]">Devmi</h4>
+                <p className="text-xs font-[Open Sans] text-red-500">Operations Lead</p>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </motion.section>

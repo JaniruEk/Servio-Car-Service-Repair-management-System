@@ -1,11 +1,11 @@
-// src/components/Login.jsx
+// src/components/AdminLogin.jsx
 import { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 
-function Login() {
+function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -45,12 +45,16 @@ function Login() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
+      if (data.category !== 'admin') {
+        await signOut(auth);
+        throw new Error('Access denied: Admins only');
+      }
       setEmail('');
       setPassword('');
-      navigate(data.redirect);
+      navigate('/admin-dashboard');
     } catch (err) {
       setError('Login failed: ' + err.message);
-      console.error('Login error:', err);
+      console.error('Admin login error:', err);
     } finally {
       setLoading(false);
     }
@@ -68,12 +72,11 @@ function Login() {
         await signOut(auth);
         throw new Error(data.error);
       }
-      navigate(
-        data.category === 'owner' ? '/owner-home' :
-        data.category === 'technician' ? '/technician-home' :
-        data.category === 'service-center' ? '/service-center-dashboard'
-        : '/signup'
-      );
+      if (data.category !== 'admin') {
+        await signOut(auth);
+        throw new Error('Access denied: Admins only');
+      }
+      navigate('/admin-dashboard');
     } catch (err) {
       setError('Google login failed: ' + err.message);
       console.error('Google login error:', err);
@@ -98,7 +101,7 @@ function Login() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center bg-gray-900 text-white font-sans bg-cover bg-center relative py-6"
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white font-sans bg-cover bg-center relative py-6"
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')`,
       }}
@@ -106,9 +109,9 @@ function Login() {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
 
-      <div className="relative z-10 ">
+      <div className="relative z-10 w-full max-w-md mx-auto">
         <h2 className="text-4xl font-bold text-white mb-8 font-[Poppins] tracking-wide text-center">
-          Login to Servio
+          Admin Login 
         </h2>
 
         {error && (
@@ -117,8 +120,8 @@ function Login() {
           </p>
         )}
 
-        <div className="bg-white/10 backdrop-blur-md p-8 rounded-lg shadow-xl border border-gray-700/50">
-          <form onSubmit={handleLogin} className="flex flex-col gap-6">
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-lg shadow-xl w-full border border-gray-700/50">
+          <form onSubmit={handleLogin} className="flex flex-col gap-6 w-full">
             {/* Email Input with Icon */}
             <div className="relative">
               <EnvelopeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-300" />
@@ -171,7 +174,7 @@ function Login() {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               ) : (
-                'Login'
+                'Admin Login'
               )}
             </button>
             <button
@@ -209,21 +212,8 @@ function Login() {
           </button>
 
           {/* Links */}
-          <div className="mt-6 flex flex-col items-center gap-3">
-            <button
-              onClick={() => navigate('/signup')}
-              className="text-red-500 hover:text-red-400 text-sm font-medium font-[Open Sans] underline underline-offset-4 transition-colors duration-300"
-              disabled={loading}
-            >
-              Need an account? Sign Up
-            </button>
-            <button
-              onClick={() => navigate('/admin-login')}
-              className="text-red-500 hover:text-red-400 text-sm font-medium font-[Open Sans] underline underline-offset-4 transition-colors duration-300"
-              disabled={loading}
-            >
-              Admin Login
-            </button>
+          <div className="mt-6 flex flex-col items-center gap-3 w-full">
+            
             <button
               onClick={() => navigate('/')}
               className="text-red-500 hover:text-red-400 text-sm font-medium font-[Open Sans] underline underline-offset-4 transition-colors duration-300"
@@ -238,4 +228,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AdminLogin;

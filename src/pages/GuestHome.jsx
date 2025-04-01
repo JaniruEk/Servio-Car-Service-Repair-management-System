@@ -17,6 +17,11 @@ import Footer from '../components/Footer';
 import HeroBg from '../assets/images/hero-bg.jpg';
 import OfferNetwork from '../assets/images/offer-network.jpg';
 import Gallery3 from '../assets/images/gallery-3.jpg';
+import YellowLambo from '../assets/images/YellowLambo.webp';
+import CarParts from '../assets/images/CarParts.webp';
+import Electrical from '../assets/images/Electrical.jpg';
+import Air from '../assets/images/Air.jpeg';
+import Interior from '../assets/images/Interior.webp';
 
 function GuestHome() {
   const navigate = useNavigate();
@@ -190,7 +195,7 @@ function GuestHome() {
           >
             <motion.div variants={itemVariants} className="md:w-1/2">
               <img
-                src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+                src={YellowLambo}
                 alt="Car Repair"
                 className="w-full h-96 object-cover rounded-lg"
               />
@@ -239,7 +244,7 @@ function GuestHome() {
           </motion.h2>
           <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {[
-              'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60',
+              CarParts,
               'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60',
               Gallery3,
               'https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60',
@@ -456,55 +461,55 @@ function GuestHome() {
         </motion.section>
 
         {/* Blog Section */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        >
-          <motion.h2
-            variants={itemVariants}
-            className="text-4xl font-bold text-center mb-12 font-[Poppins] bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-red-700"
+          <motion.section
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
           >
-            Unleashing the Power of Precision
-          </motion.h2>
-          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Electrical System Repair',
-                desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60',
-              },
-              {
-                title: 'Air Conditioning Maintenance',
-                desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                img: 'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60',
-              },
-              {
-                title: 'Interior Detailing & Upholstery',
-                desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60',
-              },
-            ].map((post, index) => (
-              <motion.div
-                key={post.title}
-                variants={itemVariants}
-                whileHover="hover"
-                className="bg-white/10 backdrop-blur-md shadow-lg rounded-lg overflow-hidden border border-gray-700/50"
-              >
-                <img src={post.img} alt={post.title} className="w-full h-48 object-cover" />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 font-[Raleway]">{post.title}</h3>
-                  <p className="text-gray-300 mb-4 font-[Open Sans]">{post.desc}</p>
-                  <button className="text-red-500 hover:underline font-[Open Sans]">Read More</button>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
+            <motion.h2
+              variants={itemVariants}
+              className="text-4xl font-bold text-center mb-12 font-[Poppins] bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-red-700"
+            >
+              Unleashing the Power of Precision
+            </motion.h2>
+            <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+            title: 'Electrical System Repair',
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            img: Electrical,
+                },
+                {
+            title: 'Air Conditioning Maintenance',
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            img: Air,
+                },
+                {
+            title: 'Interior Detailing & Upholstery',
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            img: Interior,
+                },
+              ].map((post, index) => (
+                <motion.div
+            key={post.title}
+            variants={itemVariants}
+            whileHover="hover"
+            className="bg-white/10 backdrop-blur-md shadow-lg rounded-lg overflow-hidden border border-gray-700/50"
+                >
+            <img src={post.img} alt={post.title} className="w-full h-48 object-cover" />
+            <div className="p-6">
+              <h3 className="text-xl font-semibold mb-2 font-[Raleway]">{post.title}</h3>
+              <p className="text-gray-300 mb-4 font-[Open Sans]">{post.desc}</p>
+              <button className="text-red-500 hover:underline font-[Open Sans]">Read More</button>
+            </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.section>
 
-        {/* Newsletter Section */}
+          {/* Newsletter Section */}
         <motion.section
           variants={containerVariants}
           initial="hidden"

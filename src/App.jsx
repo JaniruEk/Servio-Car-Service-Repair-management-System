@@ -13,11 +13,22 @@ import ServiceCenterSignUp from './pages/ServiceCenterSignUp';
 import GuestHome from './pages/GuestHome';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
-import AdminDashboard from './admin/admin';
-import TechnicianDashboard from './pages/TechnicianDashboard'; 
+import AdminDashboard from './admin/AdminDashboard';
+import TechnicianDashboard from './Technician/TechnicianDashboard'; 
 import OwnerHome from './pages/OwnerHome'; // Assuming you have an OwnerHome component
 import ContactTechnician from './pages/contactTechnician';
 import BookServiceCenter from './pages/BookServiceCenter';
+import ManageUsers from './admin/manageUsers';
+import AllServices from './admin/AllServices';
+import AdminReports from './admin/Reports';
+import AdminLogin from './admin/AdminLogin';
+import JobList from './Technician/JobList';
+import UpdateStatus from './Technician/UpdateStatus';
+import VehiclePartsRequest from './Technician/VehiclePartsRequest';
+import ViewDetails from './Technician/ViewDetails';
+import PendingJob from './Technician/PendingJob';
+
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -212,12 +223,20 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/profile" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />} />
         <Route path="/technician-home" element={<TechnicianDashboard />} /> {/* Bypassed authentication for testing */}
-        <Route path="/job-list" element={<div>Job List Page (TBD)</div>} />
-        <Route path="/parts-request" element={<div>Parts Request Page (TBD)</div>} />
-        <Route path="/job-details/:id" element={<div>Job Details Page (TBD)</div>} />
+        <Route path="/job-list" element={<JobList />} />
+        <Route path="/update-status" element={<UpdateStatus />} />
+        <Route path="/parts-request" element={<VehiclePartsRequest/>} />
+        <Route path="/job-details" element={<div>Job Details Page (TBD)</div>} />
         <Route path="/owner-home" element={<OwnerHome />} />
         <Route path="/contact-technician" element={<ContactTechnician />}/>
         <Route path="/book-service-center" element={<BookServiceCenter />}/>
+        <Route path="/manage-users" element={<ManageUsers />} />
+        <Route path="/all-services" element={<AllServices />} />
+        <Route path="/admin-reports" element={<AdminReports />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/view-details" element={<ViewDetails />} />
+        <Route path="/pendingjob" element={<PendingJob />} />
+        
       </Routes>
     </Router>
   );
