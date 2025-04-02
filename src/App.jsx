@@ -1,53 +1,47 @@
 // src/App.jsx
-import { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from './firebase';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-//login
-import Login from './pages/Login';
-import CategorySelection from './pages/CategorySelection';
-import OwnerSignUp from './pages/OwnerSignUp';
-import TechnicianSignUp from './pages/TechnicianSignUp';
-import ServiceCenterSignUp from './pages/ServiceCenterSignUp';
-//guset
-import GuestHome from './pages/GuestHome';
-import AboutUs from './pages/AboutUs';
-import Contact from './pages/Contact';
+// Login
+import Login from "./pages/Login";
+import CategorySelection from "./pages/CategorySelection";
+import OwnerSignUp from "./pages/OwnerSignUp";
+import TechnicianSignUp from "./pages/TechnicianSignUp";
+import ServiceCenterSignUp from "./pages/ServiceCenterSignUp";
 
-//Janiru(Admin
-import AdminDashboard from './admin/AdminDashboard';
-import ManageUsers from './admin/manageUsers';
-import AllServices from './admin/AllServices';
-import AdminReports from './admin/Reports';
-import AdminLogin from './admin/AdminLogin';
+// Guest
+import GuestHome from "./pages/GuestHome";
+import AboutUs from "./pages/AboutUs";
+import Contact from "./pages/Contact";
 
-//Udula(Owner
-import OwnerHome from './pages/OwnerHome'; // Assuming you have an OwnerHome component
-import ContactTechnician from './pages/contactTechnician';
-import BookServiceCenter from './pages/BookServiceCenter';
+// Admin
+import AdminDashboard from "./admin/AdminDashboard";
+import ManageUsers from "./admin/manageUsers";
+import AllServices from "./admin/AllServices";
+import AdminReports from "./admin/Reports";
+import AdminLogin from "./admin/AdminLogin";
 
-//Lakshan(Technician
-import TechnicianDashboard from './Technician/TechnicianDashboard';
-import UpdateStatus from './Technician/UpdateStatus';
-import VehiclePartsRequest from './Technician/VehiclePartsRequest';
-import ViewDetails from './Technician/ViewDetails';
+// Owner
+import OwnerHome from "./pages/OwnerHome";
+import ContactTechnician from "./pages/contactTechnician";
+import BookServiceCenter from "./pages/BookServiceCenter";
 
-//Devmi(Service Center)
-import ServiceCenterDashboard from './ServiceCenetrs/ServiceCenterDashbooard';
-import JobList from './ServiceCenetrs/JobList';
-import PendingJob from './ServiceCenetrs/PendingJob';
-// import Appointment from './pages/Appointment';
-// import Testpage from './pages/test';
+// Technician
+import TechnicianDashboard from "./Technician/TechnicianDashboard";
+import UpdateStatus from "./Technician/UpdateStatus";
+import VehiclePartsRequest from "./Technician/VehiclePartsRequest";
+import ViewDetails from "./Technician/ViewDetails";
 
-
-import SparePartsInventory from './ServiceCenetrs/SparePartsInventory';
-import ReportAndAnalyse from './ServiceCenetrs/Report&Analyse';
-// import ServiceAndRepairInvoice from './pages/Service&RepairInvoice.jsx';
-// import AppointmentForm from './pages/AppointmentForm.jsx';
-
+// Service Center
+import ServiceCenterDashboard from "./ServiceCenetrs/ServiceCenterDashbooard";
+import JobList from "./ServiceCenetrs/JobList";
+import PendingJob from "./ServiceCenetrs/PendingJob";
+import SparePartsInventory from "./ServiceCenetrs/SparePartsInventory";
+import ReportAndAnalyse from "./ServiceCenetrs/Report&Analyse";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -59,18 +53,18 @@ function App() {
       setLoading(true);
       if (currentUser) {
         try {
-          const userDocRef = doc(db, 'users', currentUser.uid);
+          const userDocRef = doc(db, "users", currentUser.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
             setUserData(userDoc.data());
-            console.log('User data fetched:', userDoc.data());
+            console.log("User data fetched:", userDoc.data());
           } else {
-            console.log('No user data found in Firestore');
+            console.log("No user data found in Firestore");
             setUserData(null);
           }
           setUser(currentUser);
         } catch (err) {
-          console.error('Error fetching user data:', err);
+          console.error("Error fetching user data:", err);
         }
       } else {
         setUser(null);
@@ -166,14 +160,14 @@ function App() {
                 <p>
                   <span className="font-medium text-white">Name:</span> {userData.name}
                 </p>
-                {userData.category === 'owner' && (
+                {userData.category === "owner" && (
                   <>
                     <p>
-                      <span className="font-medium text-white">Car:</span> {userData.carMake}{' '}
+                      <span className="font-medium text-white">Car:</span> {userData.carMake}{" "}
                       {userData.carModel}
                     </p>
                     <p>
-                      <span className="font-medium text-white">Number Plate:</span>{' '}
+                      <span className="font-medium text-white">Number Plate:</span>{" "}
                       {userData.numberPlate}
                     </p>
                     <p>
@@ -181,10 +175,10 @@ function App() {
                     </p>
                   </>
                 )}
-                {userData.category === 'technician' && (
+                {userData.category === "technician" && (
                   <>
                     <p>
-                      <span className="font-medium text-white">Specialization:</span>{' '}
+                      <span className="font-medium text-white">Specialization:</span>{" "}
                       {userData.specialization}
                     </p>
                     <p>
@@ -192,10 +186,10 @@ function App() {
                     </p>
                   </>
                 )}
-                {userData.category === 'service-center' && (
+                {userData.category === "service-center" && (
                   <>
                     <p>
-                      <span className="font-medium text-white">Certification:</span>{' '}
+                      <span className="font-medium text-white">Certification:</span>{" "}
                       {userData.certification}
                     </p>
                     <p>
@@ -224,54 +218,246 @@ function App() {
     </motion.div>
   );
 
+  // Protected Route Component to restrict access based on user category
+  const ProtectedRoute = ({ children, allowedCategories }) => {
+    if (loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+          <svg
+            className="animate-spin h-8 w-8 text-red-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      );
+    }
+
+    if (!user) {
+      return <Navigate to="/login" />;
+    }
+
+    if (!userData || !allowedCategories.includes(userData.category)) {
+      return <Navigate to="/" />;
+    }
+
+    return children;
+  };
+
+  // Redirect to the appropriate dashboard based on user category
+  const DashboardRedirect = () => {
+    if (loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+          <svg
+            className="animate-spin h-8 w-8 text-red-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      );
+    }
+
+    if (!user) {
+      return <GuestHome user={user} />;
+    }
+
+    if (!userData) {
+      return <AuthLayout><UserProfile /></AuthLayout>;
+    }
+
+    switch (userData.category) {
+      case "owner":
+        return <Navigate to="/owner-home" />;
+      case "technician":
+        return <Navigate to="/technician-home" />;
+      case "service-center":
+        return <Navigate to="/service-center-home" />;
+      case "admin":
+        return <Navigate to="/admin-dashboard" />;
+      default:
+        return <AuthLayout><UserProfile /></AuthLayout>;
+    }
+  };
+
   return (
     <Router>
       <Routes>
-        {/* Login and signup */}
-        <Route path="/" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <GuestHome user={user} />} />
+        {/* Root Route: Redirect to appropriate dashboard or show GuestHome */}
+        <Route path="/" element={<DashboardRedirect />} />
+
+        {/* Login and Signup Routes */}
         <Route path="/login" element={user ? <Navigate to="/" /> : <AuthLayout><Login /></AuthLayout>} />
         <Route path="/signup" element={user ? <Navigate to="/" /> : <AuthLayout><CategorySelection /></AuthLayout>} />
         <Route path="/signup/owner" element={user ? <Navigate to="/" /> : <AuthLayout><OwnerSignUp /></AuthLayout>} />
         <Route path="/signup/technician" element={user ? <Navigate to="/" /> : <AuthLayout><TechnicianSignUp /></AuthLayout>} />
         <Route path="/signup/service-center" element={user ? <Navigate to="/" /> : <AuthLayout><ServiceCenterSignUp /></AuthLayout>} />
-        {/* guest */}
+
+        {/* Guest Routes */}
         <Route path="/book-service" element={<div>Book Service Page (TBD)</div>} />
         <Route path="/contact" element={<Contact user={user} />} />
         <Route path="/about-us" element={<AboutUs user={user} />} />
         <Route path="/profile" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />} />
-        {/* admin */}
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+        {/* Admin Routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/all-services" element={<AllServices />} />
-        <Route path="/admin-reports" element={<AdminReports />} />
-        <Route path="/manage-users" element={<ManageUsers />} />
-        {/* technician */}
-        <Route path="/technician-home" element={<TechnicianDashboard />} /> {/* Bypassed authentication for testing */}
-        
-        <Route path="/update-status" element={<UpdateStatus />} />
-        <Route path="/parts-request" element={<VehiclePartsRequest/>} />
-        <Route path="/job-details" element={<div>Job Details Page (TBD)</div>} />
-        <Route path="/view-details" element={<ViewDetails />} />
-        
-        {/* Owner */}
-        <Route path="/owner-home" element={<OwnerHome />} />
-        <Route path="/contact-technician" element={<ContactTechnician />}/>
-        <Route path="/book-service-center" element={<BookServiceCenter />}/>
-        {/* Service Center */}
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute allowedCategories={["admin"]}>
+              <AdminDashboard user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-services"
+          element={
+            <ProtectedRoute allowedCategories={["admin"]}>
+              <AllServices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-reports"
+          element={
+            <ProtectedRoute allowedCategories={["admin"]}>
+              <AdminReports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage-users"
+          element={
+            <ProtectedRoute allowedCategories={["admin"]}>
+              <ManageUsers />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path='/service-center-home' element={<ServiceCenterDashboard/>}/>
-        <Route path="/pending-jobs" element={<PendingJob />} />
-        {/* <Route path="/" element={<ServiceCenter />} /> */}
-        {/* <Route path="/test" element={<Testpage />} /> */}
-        {/* <Route path='/dashboard' element={<ServiceCenter/>}/> */}
-        <Route path="/job-list" element={<JobList />} />
-        <Route path='/spare-parts-inventory' element={<SparePartsInventory/>}/>
-        <Route path='/report-and-analyse' element={<ReportAndAnalyse/>}/>
-        {/* <Route path='/ServiceAndRepairInvoice' element={<ServiceAndRepairInvoice/>}/> */}
-        {/* <Route path='/Appointment' element={<Appointment />} /> */}
-        {/* <Route path='/appointment-form' element={<AppointmentForm/>}/>  */}
-        
+        {/* Technician Routes */}
+        <Route
+          path="/technician-home"
+          element={
+            <ProtectedRoute allowedCategories={["technician"]}>
+              <TechnicianDashboard user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-status"
+          element={
+            <ProtectedRoute allowedCategories={["technician"]}>
+              <UpdateStatus />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/parts-request"
+          element={
+            <ProtectedRoute allowedCategories={["technician"]}>
+              <VehiclePartsRequest />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/job-details"
+          element={
+            <ProtectedRoute allowedCategories={["technician"]}>
+              <div>Job Details Page (TBD)</div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-details"
+          element={
+            <ProtectedRoute allowedCategories={["technician"]}>
+              <ViewDetails />
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Owner Routes */}
+        <Route
+          path="/owner-home"
+          element={
+            <ProtectedRoute allowedCategories={["owner"]}>
+              <OwnerHome user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contact-technician"
+          element={
+            <ProtectedRoute allowedCategories={["owner"]}>
+              <ContactTechnician />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/book-service-center"
+          element={
+            <ProtectedRoute allowedCategories={["owner"]}>
+              <BookServiceCenter />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Service Center Routes */}
+        <Route
+          path="/service-center-home"
+          element={
+            <ProtectedRoute allowedCategories={["service-center"]}>
+              <ServiceCenterDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pending-jobs"
+          element={
+            <ProtectedRoute allowedCategories={["service-center"]}>
+              <PendingJob />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/job-list"
+          element={
+            <ProtectedRoute allowedCategories={["service-center"]}>
+              <JobList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/spare-parts-inventory"
+          element={
+            <ProtectedRoute allowedCategories={["service-center"]}>
+              <SparePartsInventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/report-and-analyse"
+          element={
+            <ProtectedRoute allowedCategories={["service-center"]}>
+              <ReportAndAnalyse />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

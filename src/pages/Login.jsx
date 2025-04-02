@@ -71,7 +71,7 @@ function Login() {
       navigate(
         data.category === 'owner' ? '/owner-home' :
         data.category === 'technician' ? '/technician-home' :
-        data.category === 'service-center' ? '/service-center-dashboard'
+        data.category === 'service-center' ? '/service-center-home'
         : '/signup'
       );
     } catch (err) {

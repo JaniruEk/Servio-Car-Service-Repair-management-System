@@ -53,7 +53,7 @@ const TechnicianSidebar = ({ user, activePath }) => {
     { text: "Profile", path: "/profile", icon: <UserIcon className="h-6 w-6" /> },
   
     { text: "Service History", path: "/service-history", icon: <ClockIcon className="h-6 w-6" /> },
-    { text: "Pending Jobs", path: "/pendingJob", icon: <WrenchScrewdriverIcon className="h-6 w-6" /> },
+    //{ text: "Pending Jobs", path: "/pendingJob", icon: <WrenchScrewdriverIcon className="h-6 w-6" /> },
     // { text: "Contact Us", path: "/contact", icon: <EnvelopeIcon className="h-6 w-6" /> },
     // { text: "About Us", path: "/about-us", icon: <InformationCircleIcon className="h-6 w-6" /> },
     { text: "Logout", path: "/logout", icon: <ArrowRightOnRectangleIcon className="h-6 w-6" /> },

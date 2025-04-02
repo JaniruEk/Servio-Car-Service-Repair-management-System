@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import CAR111 from "../assets/images/Car11.jpeg";
 import CAR12 from "../assets/images/CAR12.jpeg";
-import AdminSidebar from "../components/AdminSidebar"; // Assuming this exists
+import AdminSidebar from "../components/ServiceCenterSidebar"; // Assuming this exists
 import Footer from "../components/Footer"; // Assuming this exists
 
 const SparePartsInventory = () => {
