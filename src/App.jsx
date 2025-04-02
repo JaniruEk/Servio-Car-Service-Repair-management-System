@@ -5,29 +5,48 @@ import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+
+//login
 import Login from './pages/Login';
 import CategorySelection from './pages/CategorySelection';
 import OwnerSignUp from './pages/OwnerSignUp';
 import TechnicianSignUp from './pages/TechnicianSignUp';
 import ServiceCenterSignUp from './pages/ServiceCenterSignUp';
+//guset
 import GuestHome from './pages/GuestHome';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
+
+//Janiru(Admin
 import AdminDashboard from './admin/AdminDashboard';
-import TechnicianDashboard from './Technician/TechnicianDashboard'; 
-import OwnerHome from './pages/OwnerHome'; // Assuming you have an OwnerHome component
-import ContactTechnician from './pages/contactTechnician';
-import BookServiceCenter from './pages/BookServiceCenter';
 import ManageUsers from './admin/manageUsers';
 import AllServices from './admin/AllServices';
 import AdminReports from './admin/Reports';
 import AdminLogin from './admin/AdminLogin';
-import JobList from './Technician/JobList';
+
+//Udula(Owner
+import OwnerHome from './pages/OwnerHome'; // Assuming you have an OwnerHome component
+import ContactTechnician from './pages/contactTechnician';
+import BookServiceCenter from './pages/BookServiceCenter';
+
+//Lakshan(Technician
+import TechnicianDashboard from './Technician/TechnicianDashboard';
 import UpdateStatus from './Technician/UpdateStatus';
 import VehiclePartsRequest from './Technician/VehiclePartsRequest';
 import ViewDetails from './Technician/ViewDetails';
-import PendingJob from './Technician/PendingJob';
 
+//Devmi(Service Center)
+import ServiceCenterDashboard from './ServiceCenetrs/ServiceCenterDashbooard';
+import JobList from './ServiceCenetrs/JobList';
+import PendingJob from './ServiceCenetrs/PendingJob';
+// import Appointment from './pages/Appointment';
+// import Testpage from './pages/test';
+
+
+import SparePartsInventory from './ServiceCenetrs/SparePartsInventory';
+import ReportAndAnalyse from './ServiceCenetrs/Report&Analyse';
+// import ServiceAndRepairInvoice from './pages/Service&RepairInvoice.jsx';
+// import AppointmentForm from './pages/AppointmentForm.jsx';
 
 
 function App() {
@@ -208,35 +227,51 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={user ? <AuthLayout><UserProfile /></AuthLayout> : <GuestHome user={user} />}
-        />
+        {/* Login and signup */}
+        <Route path="/" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <GuestHome user={user} />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <AuthLayout><Login /></AuthLayout>} />
         <Route path="/signup" element={user ? <Navigate to="/" /> : <AuthLayout><CategorySelection /></AuthLayout>} />
         <Route path="/signup/owner" element={user ? <Navigate to="/" /> : <AuthLayout><OwnerSignUp /></AuthLayout>} />
         <Route path="/signup/technician" element={user ? <Navigate to="/" /> : <AuthLayout><TechnicianSignUp /></AuthLayout>} />
         <Route path="/signup/service-center" element={user ? <Navigate to="/" /> : <AuthLayout><ServiceCenterSignUp /></AuthLayout>} />
+        {/* guest */}
         <Route path="/book-service" element={<div>Book Service Page (TBD)</div>} />
         <Route path="/contact" element={<Contact user={user} />} />
         <Route path="/about-us" element={<AboutUs user={user} />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/profile" element={user ? <AuthLayout><UserProfile /></AuthLayout> : <Navigate to="/login" />} />
+        {/* admin */}
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/all-services" element={<AllServices />} />
+        <Route path="/admin-reports" element={<AdminReports />} />
+        <Route path="/manage-users" element={<ManageUsers />} />
+        {/* technician */}
         <Route path="/technician-home" element={<TechnicianDashboard />} /> {/* Bypassed authentication for testing */}
-        <Route path="/job-list" element={<JobList />} />
+        
         <Route path="/update-status" element={<UpdateStatus />} />
         <Route path="/parts-request" element={<VehiclePartsRequest/>} />
         <Route path="/job-details" element={<div>Job Details Page (TBD)</div>} />
+        <Route path="/view-details" element={<ViewDetails />} />
+        
+        {/* Owner */}
         <Route path="/owner-home" element={<OwnerHome />} />
         <Route path="/contact-technician" element={<ContactTechnician />}/>
         <Route path="/book-service-center" element={<BookServiceCenter />}/>
-        <Route path="/manage-users" element={<ManageUsers />} />
-        <Route path="/all-services" element={<AllServices />} />
-        <Route path="/admin-reports" element={<AdminReports />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/view-details" element={<ViewDetails />} />
-        <Route path="/pendingjob" element={<PendingJob />} />
+        {/* Service Center */}
+
+        <Route path='/service-center-home' element={<ServiceCenterDashboard/>}/>
+        <Route path="/pending-jobs" element={<PendingJob />} />
+        {/* <Route path="/" element={<ServiceCenter />} /> */}
+        {/* <Route path="/test" element={<Testpage />} /> */}
+        {/* <Route path='/dashboard' element={<ServiceCenter/>}/> */}
+        <Route path="/job-list" element={<JobList />} />
+        <Route path='/spare-parts-inventory' element={<SparePartsInventory/>}/>
+        <Route path='/report-and-analyse' element={<ReportAndAnalyse/>}/>
+        {/* <Route path='/ServiceAndRepairInvoice' element={<ServiceAndRepairInvoice/>}/> */}
+        {/* <Route path='/Appointment' element={<Appointment />} /> */}
+        {/* <Route path='/appointment-form' element={<AppointmentForm/>}/>  */}
         
+
       </Routes>
     </Router>
   );

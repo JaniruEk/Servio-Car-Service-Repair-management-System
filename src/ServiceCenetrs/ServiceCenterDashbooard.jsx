@@ -1,6 +1,12 @@
-// src/components/AdminDashboard.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/components/ServiceCenter.jsx
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import CAR4 from "../assets/images/Car4.jpeg";
+import CAR7 from "../assets/images/Car7.jpeg";
+import CAR6 from "../assets/images/Car6.jpeg";
+import CAR8 from "../assets/images/Car8.jpeg";
+import CAR9 from "../assets/images/Car9.jpeg";
 import {
   ChartBarIcon,
   UsersIcon,
@@ -8,49 +14,47 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-} from '@heroicons/react/24/solid';
-import Footer from '../components/Footer';
-import AdminSidebar from '../components/AdminSidebar';
+} from "@heroicons/react/24/solid";
+import AdminSidebar from "../components/ServiceCenterSidebar"; // Assuming you have this component
+import Footer from "../components/Footer"; // Assuming you have this component
 
-function AdminDashboard({ user }) {
-  const navigate = useNavigate();
+const ServiceCenterDashboard = () => {
   const [services, setServices] = useState([
-    { id: 1, customer: 'John Doe', date: 'March 10, 2025', type: 'Oil Change', status: 'Completed', cost: 50 },
-    { id: 2, customer: 'Jane Smith', date: 'Feb 20, 2025', type: 'Brake Repair', status: 'Completed', cost: 150 },
-    { id: 3, customer: 'Mike Johnson', date: 'April 15, 2025', type: 'Tire Rotation', status: 'Pending', cost: 80 },
+    { id: 1, title: "Brake Repair", description: "Expert brake repair services.", image: CAR9, status: "Active", cost: 150 },
+    { id: 2, title: "Oil Change", description: "Quick and efficient oil change.", image: CAR8, status: "Active", cost: 50 },
+    { id: 3, title: "Tire Rotation", description: "Professional tire rotation service.", image: CAR6, status: "Inactive", cost: 80 },
+    { id: 4, title: "Engine Diagnostics", description: "Advanced engine diagnostics.", image: CAR7, status: "Active", cost: 200 },
   ]);
-  const [filterStatus, setFilterStatus] = useState('All');
+  const [filterStatus, setFilterStatus] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [newService, setNewService] = useState({ customer: '', date: '', type: '', status: 'Pending', cost: '' });
+  const [newService, setNewService] = useState({ title: "", description: "", image: "", status: "Active", cost: "" });
   const [editService, setEditService] = useState(null);
 
-  const filteredServices = filterStatus === 'All' ? services : services.filter(service => service.status === filterStatus);
+  const filteredServices = filterStatus === "All" ? services : services.filter((service) => service.status === filterStatus);
 
   const handleServiceSubmit = (e) => {
     e.preventDefault();
-    setServices([...services, { ...newService, id: services.length + 1, cost: Number(newService.cost) }]);
-    setNewService({ customer: '', date: '', type: '', status: 'Pending', cost: '' });
+    setServices([...services, { ...newService, id: services.length + 1, cost: Number(newService.cost), image: newService.image || CAR4 }]);
+    setNewService({ title: "", description: "", image: "", status: "Active", cost: "" });
     setShowAddModal(false);
   };
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
-    setServices(services.map(service => 
-      service.id === editService.id ? { ...editService, cost: Number(editService.cost) } : service
-    ));
+    setServices(services.map((service) => (service.id === editService.id ? { ...editService, cost: Number(editService.cost) } : service)));
     setEditService(null);
     setShowEditModal(false);
   };
 
-  const handleDelete = (id) => setServices(services.filter(service => service.id !== id));
+  const handleDelete = (id) => setServices(services.filter((service) => service.id !== id));
   const handleEditClick = (service) => {
     setEditService({ ...service });
     setShowEditModal(true);
   };
 
-  const totalRevenue = services.reduce((sum, service) => sum + (service.status === 'Completed' ? service.cost : 0), 0);
-  const totalUsers = new Set(services.map(s => s.customer)).size;
+  const totalRevenue = services.reduce((sum, service) => sum + (service.status === "Active" ? service.cost : 0), 0);
+  const activeServices = services.filter((s) => s.status === "Active").length;
 
   return (
     <div
@@ -67,14 +71,14 @@ function AdminDashboard({ user }) {
 
       <div className="flex flex-1 relative z-10">
         {/* Sidebar */}
-        <AdminSidebar activePath="/admin-dashboard" />
+        <AdminSidebar activePath="/service-center" />
 
         {/* Main Content */}
         <main className="flex-1 max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <header className="bg-white/10 backdrop-blur-md text-white p-6 rounded-lg mb-6 flex justify-between items-center shadow-lg">
             <div>
-              <h1 className="text-3xl font-extrabold font-[Poppins] tracking-tight">Servio Admin Dashboard</h1>
-              <p className="text-sm mt-1 font-[Open Sans] text-gray-300">Oversee operations and manage customer services</p>
+              <h1 className="text-3xl font-extrabold font-[Poppins] tracking-tight">Service Center Dashboard</h1>
+              <p className="text-sm mt-1 font-[Open Sans] text-gray-300">Manage your service offerings</p>
             </div>
           </header>
 
@@ -82,13 +86,13 @@ function AdminDashboard({ user }) {
           <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="p-6 rounded-lg shadow-lg text-center bg-white/10 backdrop-blur-md border border-gray-700/50 hover:border-red-500 transition-all duration-300">
               <UsersIcon className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2 font-[Raleway]">Total Users</h3>
-              <p className="text-gray-300 font-[Open Sans] text-2xl font-bold">{totalUsers}</p>
+              <h3 className="text-xl font-semibold text-white mb-2 font-[Raleway]">Total Services</h3>
+              <p className="text-gray-300 font-[Open Sans] text-2xl font-bold">{services.length}</p>
             </div>
             <div className="p-6 rounded-lg shadow-lg text-center bg-white/10 backdrop-blur-md border border-gray-700/50 hover:border-red-500 transition-all duration-300">
               <WrenchScrewdriverIcon className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2 font-[Raleway]">Pending Services</h3>
-              <p className="text-gray-300 font-[Open Sans] text-2xl font-bold">{services.filter(s => s.status === 'Pending').length}</p>
+              <h3 className="text-xl font-semibold text-white mb-2 font-[Raleway]">Active Services</h3>
+              <p className="text-gray-300 font-[Open Sans] text-2xl font-bold">{activeServices}</p>
             </div>
             <div className="p-6 rounded-lg shadow-lg text-center bg-white/10 backdrop-blur-md border border-gray-700/50 hover:border-red-500 transition-all duration-300">
               <ChartBarIcon className="h-12 w-12 text-red-500 mx-auto mb-4" />
@@ -97,10 +101,10 @@ function AdminDashboard({ user }) {
             </div>
           </section>
 
-          {/* Service Management */}
+          {/* Services Management */}
           <section>
             <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
-              <h2 className="text-2xl font-bold text-white font-[Poppins]">Service Management</h2>
+              <h2 className="text-2xl font-bold text-white font-[Poppins]">Services Management</h2>
               <div className="flex gap-2">
                 <select
                   value={filterStatus}
@@ -108,8 +112,8 @@ function AdminDashboard({ user }) {
                   className="p-2 rounded-md border bg-gray-800 text-white border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 font-[Open Sans]"
                 >
                   <option value="All">All Services</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Pending">Pending</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
                 <button
                   onClick={() => setShowAddModal(true)}
@@ -123,9 +127,9 @@ function AdminDashboard({ user }) {
               <table className="w-full border-collapse rounded-lg shadow-lg bg-white/10 backdrop-blur-md">
                 <thead>
                   <tr className="bg-red-600 text-white">
-                    <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Customer</th>
-                    <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Date</th>
-                    <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Service Type</th>
+                    <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Title</th>
+                    <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Description</th>
+                    <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Image</th>
                     <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Status</th>
                     <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Cost</th>
                     <th className="border border-gray-700/50 p-3 text-left font-[Raleway]">Actions</th>
@@ -134,13 +138,22 @@ function AdminDashboard({ user }) {
                 <tbody>
                   {filteredServices.map((service) => (
                     <tr key={service.id} className="hover:bg-gray-700/50">
-                      <td className="border border-gray-700/50 p-3 font-[Open Sans] text-gray-300">{service.customer}</td>
-                      <td className="border border-gray-700/50 p-3 font-[Open Sans] text-gray-300">{service.date}</td>
-                      <td className="border border-gray-700/50 p-3 font-[Open Sans] text-gray-300">{service.type}</td>
+                      <td className="border border-gray-700/50 p-3 font-[Open Sans] text-gray-300">{service.title}</td>
+                      <td className="border border-gray-700/50 p-3 font-[Open Sans] text-gray-300">{service.description}</td>
+                      <td className="border border-gray-700/50 p-3">
+                        <img
+                          src={service.image}
+                          alt={service.title}
+                          className="h-12 w-12 object-cover rounded-md"
+                          onError={(e) => {
+                            e.target.src = "https://via.placeholder.com/50x50?text=Image+Not+Found";
+                          }}
+                        />
+                      </td>
                       <td className="border border-gray-700/50 p-3">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-[Open Sans] ${
-                            service.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                            service.status === "Active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
                           }`}
                         >
                           {service.status}
@@ -177,35 +190,35 @@ function AdminDashboard({ user }) {
                 <h3 className="text-xl font-semibold mb-4 font-[Raleway] text-white">Add New Service</h3>
                 <form onSubmit={handleServiceSubmit} className="space-y-4 font-[Open Sans]">
                   <div>
-                    <label className="block mb-1 text-gray-300">Customer Name</label>
+                    <label className="block mb-1 text-gray-300">Service Title</label>
                     <input
                       type="text"
-                      value={newService.customer}
-                      onChange={(e) => setNewService({ ...newService, customer: e.target.value })}
+                      value={newService.title}
+                      onChange={(e) => setNewService({ ...newService, title: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-                      placeholder="e.g., John Doe"
+                      placeholder="e.g., Brake Repair"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-gray-300">Date</label>
+                    <label className="block mb-1 text-gray-300">Description</label>
                     <input
-                      type="date"
-                      value={newService.date}
-                      onChange={(e) => setNewService({ ...newService, date: e.target.value })}
+                      type="text"
+                      value={newService.description}
+                      onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                      placeholder="e.g., Expert brake repair services"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-gray-300">Service Type</label>
+                    <label className="block mb-1 text-gray-300">Image URL (optional)</label>
                     <input
                       type="text"
-                      value={newService.type}
-                      onChange={(e) => setNewService({ ...newService, type: e.target.value })}
+                      value={newService.image}
+                      onChange={(e) => setNewService({ ...newService, image: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-                      placeholder="e.g., Oil Change"
-                      required
+                      placeholder="e.g., https://example.com/image.jpg"
                     />
                   </div>
                   <div>
@@ -215,8 +228,8 @@ function AdminDashboard({ user }) {
                       onChange={(e) => setNewService({ ...newService, status: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="Completed">Completed</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
                     </select>
                   </div>
                   <div>
@@ -226,7 +239,7 @@ function AdminDashboard({ user }) {
                       value={newService.cost}
                       onChange={(e) => setNewService({ ...newService, cost: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-                      placeholder="e.g., 50"
+                      placeholder="e.g., 150"
                       min="0"
                       step="0.01"
                       required
@@ -259,33 +272,32 @@ function AdminDashboard({ user }) {
                 <h3 className="text-xl font-semibold mb-4 font-[Raleway] text-white">Edit Service</h3>
                 <form onSubmit={handleEditSubmit} className="space-y-4 font-[Open Sans]">
                   <div>
-                    <label className="block mb-1 text-gray-300">Customer Name</label>
+                    <label className="block mb-1 text-gray-300">Service Title</label>
                     <input
                       type="text"
-                      value={editService.customer}
-                      onChange={(e) => setEditService({ ...editService, customer: e.target.value })}
+                      value={editService.title}
+                      onChange={(e) => setEditService({ ...editService, title: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-gray-300">Date</label>
+                    <label className="block mb-1 text-gray-300">Description</label>
                     <input
-                      type="date"
-                      value={editService.date}
-                      onChange={(e) => setEditService({ ...editService, date: e.target.value })}
+                      type="text"
+                      value={editService.description}
+                      onChange={(e) => setEditService({ ...editService, description: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-gray-300">Service Type</label>
+                    <label className="block mb-1 text-gray-300">Image URL</label>
                     <input
                       type="text"
-                      value={editService.type}
-                      onChange={(e) => setEditService({ ...editService, type: e.target.value })}
+                      value={editService.image}
+                      onChange={(e) => setEditService({ ...editService, image: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-                      required
                     />
                   </div>
                   <div>
@@ -295,8 +307,8 @@ function AdminDashboard({ user }) {
                       onChange={(e) => setEditService({ ...editService, status: e.target.value })}
                       className="w-full p-2 border rounded-md bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="Completed">Completed</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
                     </select>
                   </div>
                   <div>
@@ -337,6 +349,6 @@ function AdminDashboard({ user }) {
       <Footer />
     </div>
   );
-}
+};
 
-export default AdminDashboard;
+export default ServiceCenterDashboard;

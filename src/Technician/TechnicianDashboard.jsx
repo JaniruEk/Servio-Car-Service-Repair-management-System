@@ -79,7 +79,9 @@ const TechnicianDashboard = ({ user }) => {
       className="flex flex-col min-h-screen bg-gray-900 text-white font-sans bg-cover bg-center"
       style={{
         backgroundImage: "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')",
-        
+        backgroundAttachment: "fixed", // Makes the image static
+  backgroundSize: "cover", // Ensures the image covers the container (optional, already implied by bg-cover)
+  backgroundPosition: "center", // Centers the image (optional, already implied by bg-center)
       }}
     >
       {/* Overlay for better readability */}

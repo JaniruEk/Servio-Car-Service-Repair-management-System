@@ -1,29 +1,27 @@
+// src/components/ServiceCenterSidebar.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Bars3Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
   HomeIcon,
-  UserIcon,
-  WrenchScrewdriverIcon,
   ClockIcon,
-  EnvelopeIcon,
+  ListBulletIcon,
+  WrenchScrewdriverIcon,
+  ChartBarIcon,
   InformationCircleIcon,
+  EnvelopeIcon,
   ArrowRightOnRectangleIcon,
-  
 } from "@heroicons/react/24/solid";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
-import JobList from "../ServiceCenetrs/JobList";
-import PendingJob from "../ServiceCenetrs/PendingJob";
+import { auth } from "../firebase"; // Adjust path to your Firebase config
 
-const TechnicianSidebar = ({ user, activePath }) => {
+const ServiceCenterSidebar = ({ activePath }) => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // For mobile sidebar toggle
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // For desktop sidebar collapse
 
-  // Toggle sidebar for mobile
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
     if (!isSidebarOpen) {
@@ -31,31 +29,27 @@ const TechnicianSidebar = ({ user, activePath }) => {
     }
   };
 
-  // Toggle sidebar collapse for desktop
   const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  // Logout handler with error handling
   const handleLogout = async () => {
     try {
       await signOut(auth);
       navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
-      // Optionally, show a user-facing error message (e.g., using a toast notification)
     }
   };
 
-  // Sidebar navigation items with icons
   const sidebarItems = [
-    { text: "Dashboard", path: "/dashboard", icon: <HomeIcon className="h-6 w-6" /> },
-    { text: "Profile", path: "/profile", icon: <UserIcon className="h-6 w-6" /> },
-  
-    { text: "Service History", path: "/service-history", icon: <ClockIcon className="h-6 w-6" /> },
-    { text: "Pending Jobs", path: "/pendingJob", icon: <WrenchScrewdriverIcon className="h-6 w-6" /> },
-    // { text: "Contact Us", path: "/contact", icon: <EnvelopeIcon className="h-6 w-6" /> },
+    { text: "Dashboard", path: "/service-center-home", icon: <HomeIcon className="h-6 w-6" /> },
+    { text: "Pending Jobs", path: "/pending-jobs", icon: <ClockIcon className="h-6 w-6" /> },
+    { text: "Job List", path: "/job-list", icon: <ListBulletIcon className="h-6 w-6" /> },
+    { text: "Spare Parts Inventory", path: "/spare-parts-inventory", icon: <WrenchScrewdriverIcon className="h-6 w-6" /> },
+    { text: "Report and Analyse", path: "/report-and-analyse", icon: <ChartBarIcon className="h-6 w-6" /> },
     // { text: "About Us", path: "/about-us", icon: <InformationCircleIcon className="h-6 w-6" /> },
+    // { text: "Contact Us", path: "/contact", icon: <EnvelopeIcon className="h-6 w-6" /> },
     { text: "Logout", path: "/logout", icon: <ArrowRightOnRectangleIcon className="h-6 w-6" /> },
   ];
 
@@ -105,29 +99,29 @@ const TechnicianSidebar = ({ user, activePath }) => {
         <ul className="space-y-3">
           {sidebarItems.map((item) => (
             <li key={item.text} className="relative group">
-              <a
-                href={item.path}
+              <NavLink
+                to={item.path}
                 onClick={(e) => {
-                  e.preventDefault();
                   if (item.text === "Logout") {
+                    e.preventDefault();
                     handleLogout();
-                  } else {
-                    navigate(item.path);
                   }
                 }}
-                className={`flex items-center gap-2 py-3 px-4 hover:bg-gray-700 hover:text-red-500 transition-all duration-300 font-[Open Sans] text-sm tracking-wide ${
-                  isSidebarCollapsed ? "justify-center" : ""
-                } ${activePath === item.path ? "bg-gray-700 font-bold text-red-500 shadow-inner" : ""}`}
+                className={({ isActive }) =>
+                  `flex items-center gap-2 py-3 px-4 hover:bg-gray-700 hover:text-red-500 transition-all duration-300 font-[Open Sans] text-sm tracking-wide ${
+                    isSidebarCollapsed ? "justify-center" : ""
+                  } ${
+                    (isActive && item.text !== "Logout") || (item.text === "Logout" && activePath === item.path)
+                      ? "bg-gray-700 font-bold text-red-500 shadow-inner"
+                      : ""
+                  }`
+                }
               >
                 {item.icon}
-                <span
-                  className={`transition-opacity duration-300 ${
-                    isSidebarCollapsed ? "hidden" : "block"
-                  }`}
-                >
+                <span className={`transition-opacity duration-300 ${isSidebarCollapsed ? "hidden" : "block"}`}>
                   {item.text}
                 </span>
-              </a>
+              </NavLink>
               {isSidebarCollapsed && (
                 <span className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   {item.text}
@@ -141,4 +135,4 @@ const TechnicianSidebar = ({ user, activePath }) => {
   );
 };
 
-export default TechnicianSidebar;
+export default ServiceCenterSidebar;

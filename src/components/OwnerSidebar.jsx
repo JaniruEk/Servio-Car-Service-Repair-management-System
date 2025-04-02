@@ -47,8 +47,8 @@ const OwnerSidebar = ({ activePath }) => {
     { text: "Profile", path: "/profile", icon: <UserIcon className="h-6 w-6" /> },
     { text: "Contact Technician", path: "/contact-technician", icon: <WrenchScrewdriverIcon className="h-6 w-6" /> },
     { text: "Book Service Center", path: "/book-service-center", icon: <CalendarIcon className="h-6 w-6" /> },
-    { text: "Contact Us", path: "/contact", icon: <EnvelopeIcon className="h-6 w-6" /> },
-    { text: "About Us", path: "/about-us", icon: <InformationCircleIcon className="h-6 w-6" /> },
+    // { text: "Contact Us", path: "/contact", icon: <EnvelopeIcon className="h-6 w-6" /> },
+    // { text: "About Us", path: "/about-us", icon: <InformationCircleIcon className="h-6 w-6" /> },
     { text: "Logout", path: "/logout", icon: <ArrowRightOnRectangleIcon className="h-6 w-6" /> },
   ];
 
